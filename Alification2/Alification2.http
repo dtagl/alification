@@ -1,0 +1,6 @@
+@Alification2_HostAddress = http://localhost:5133
+
+GET {{Alification2_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

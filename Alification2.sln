@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alification2", "Alification2\Alification2.csproj", "{80AB696A-4DA1-4D94-BAF7-B8074625C376}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{80AB696A-4DA1-4D94-BAF7-B8074625C376}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80AB696A-4DA1-4D94-BAF7-B8074625C376}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80AB696A-4DA1-4D94-BAF7-B8074625C376}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80AB696A-4DA1-4D94-BAF7-B8074625C376}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

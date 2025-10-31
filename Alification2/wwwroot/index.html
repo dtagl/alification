@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Meeting Booking</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; margin: 16px; }
+        button { padding: 10px 14px; margin: 6px 0; font-size: 14px; }
+        input, select { padding: 8px; margin: 6px 0; width: 100%; box-sizing: border-box; }
+        .card { border: 1px solid #ddd; border-radius: 8px; padding: 14px; margin: 10px 0; }
+        code { background: #f6f8fa; padding: 2px 6px; border-radius: 4px; }
+    </style>
+    <script>
+        const tg = window.Telegram?.WebApp;
+        tg?.ready();
+        tg?.expand();
+
+        const initData = tg?.initData || '';
+
+        async function api(path, options = {}) {
+            const headers = {
+                'Content-Type': 'application/json',
+                'X-Telegram-Init-Data': initData,
+                ...(options.headers || {})
+            };
+            const res = await fetch(path, { ...options, headers });
+            if (!res.ok) {
+                const txt = await res.text();
+                throw new Error(`HTTP ${res.status}: ${txt}`);
+            }
+            const text = await res.text();
+            try { return JSON.parse(text); } catch { return text; }
+        }
+
+        async function bootstrap() {
+            const me = await api('/me');
+            document.getElementById('me').textContent = JSON.stringify(me, null, 2);
+        }
+
+        async function createCompany() {
+            const name = document.getElementById('companyName').value.trim();
+            const password = document.getElementById('companyPass').value.trim();
+            const userName = document.getElementById('userName').value.trim();
+            if (!name || !password) { alert('Enter name and password'); return; }
+            const r = await api('/companies', { method: 'POST', body: JSON.stringify({ name, password, userName }) });
+            alert('Company created: ' + JSON.stringify(r));
+            await bootstrap();
+        }
+
+        async function listRooms() {
+            const r = await api('/rooms');
+            document.getElementById('rooms').textContent = JSON.stringify(r, null, 2);
+        }
+
+        window.addEventListener('load', bootstrap);
+    </script>
+</head>
+<body>
+    <h1>Smart Meeting Booking</h1>
+    <div class="card">
+        <h3>Auth status (/me)</h3>
+        <pre id="me">...</pre>
+    </div>
+
+    <div class="card">
+        <h3>Create company</h3>
+        <input id="companyName" placeholder="Company name" />
+        <input id="companyPass" placeholder="Company password" type="password" />
+        <input id="userName" placeholder="Your display name (optional)" />
+        <button onclick="createCompany()">Create</button>
+    </div>
+
+    <div class="card">
+        <h3>Rooms</h3>
+        <button onclick="listRooms()">List rooms</button>
+        <pre id="rooms">...</pre>
+    </div>
+
+    <p>This Web App forwards Telegram <code>initData</code> to the API via header <code>X-Telegram-Init-Data</code>. The backend validates it automatically.</p>
+</body>
+</html>
+
+
